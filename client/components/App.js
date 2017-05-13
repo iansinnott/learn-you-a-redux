@@ -8,6 +8,8 @@ import s from './App.styl';
 const cx = classnames.bind(s);
 import logo from './react-logo.png';
 
+import Counter from './Counter.js';
+
 // Favicon link is in the template, this just makes webpack package it up for us
 import './favicon.ico';
 
@@ -18,6 +20,7 @@ export class Home extends React.Component {
         <div className={cx('siteTitle')}>
           <h1>Learn you a redux</h1>
         </div>
+        <Counter />
       </div>
     );
   }
