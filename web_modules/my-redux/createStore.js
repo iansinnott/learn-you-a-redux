@@ -44,6 +44,12 @@ class Store {
   };
 }
 
-export const createStore = (reducer, initialState) => {
-  return new Store(reducer, initialState);
+export const createStore = (reducer, initialState, enhance) => {
+  const store = new Store(reducer, initialState);
+
+  if (typeof enhance === 'function') {
+    return enhance(store);
+  } else {
+    return store;
+  }
 };

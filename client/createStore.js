@@ -1,4 +1,4 @@
-import { createStore as createReduxStore, applyMiddleware } from 'redux';
+import { createStore as createReduxStore, applyMiddleware } from 'my-redux';
 
 import reducer from './modules';
 
@@ -13,9 +13,12 @@ const loggerMiddleware = (store) => {
   };
 };
 
+const initialState = undefined;
+
 export default function createStore() {
   return createReduxStore(
     reducer,
+    initialState,
     applyMiddleware(loggerMiddleware)
   );
 }
