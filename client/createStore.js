@@ -1,4 +1,6 @@
 import { createStore as createReduxStore, applyMiddleware } from 'my-redux';
+import { createEpicMiddleware } from 'redux-observable';
+import 'rxjs'; // Import all operators
 
 import reducer from './modules';
 
@@ -13,12 +15,21 @@ const loggerMiddleware = (store) => {
   };
 };
 
+const epic = (action$, store) =>
+  action$.ofType('PING')
+    .do(() => console.warn('just saw ping'))
+    .delay(1000)
+    .mapTo({ type: 'PONG' });
+
 const initialState = undefined;
 
 export default function createStore() {
   return createReduxStore(
     reducer,
     initialState,
-    applyMiddleware(loggerMiddleware)
+    applyMiddleware(
+      createEpicMiddleware(epic),
+      loggerMiddleware,
+    )
   );
 }
