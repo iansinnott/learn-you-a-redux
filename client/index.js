@@ -7,10 +7,6 @@ import { Provider } from 'react-redux';
 import routes from './routes.js';
 import store from './store.js';
 
-store.subscribe(() => {
-  console.log('state', store.getState());
-});
-
 if (process.env.NODE_ENV === 'development') {
   require('./exposeGlobals.js')(window);
 }
