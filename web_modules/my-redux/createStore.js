@@ -45,11 +45,9 @@ class Store {
 }
 
 export const createStore = (reducer, initialState, enhance) => {
-  const store = new Store(reducer, initialState);
-
   if (typeof enhance === 'function') {
-    return enhance(store);
+    return enhance(createStore)(reducer, initialState);
   } else {
-    return store;
+    return new Store(reducer, initialState);
   }
 };
