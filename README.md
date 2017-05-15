@@ -1,6 +1,8 @@
 # Learn You a Redux
 
-I feel that I already have a pretty good grasp of Redux, but I figured I'd build it myself to get a sense of what's involved. Reading through [this article][redux article] inspired me.
+> A Redux clone in 100 lines of JS
+
+I felt that I already had a pretty good grasp of Redux, but I figured I'd build it myself to get a sense of what's involved. [This article][redux article] inspired me.
 
 [redux article]: https://zapier.com/engineering/how-to-build-redux/
 
@@ -9,7 +11,6 @@ I feel that I already have a pretty good grasp of Redux, but I figured I'd build
 * `npm install`
 * `npm start` to run a dev server
 * `npm run build` to minify, package and generate static HTML files from your routes
-
 
 ## Troubleshooting
 

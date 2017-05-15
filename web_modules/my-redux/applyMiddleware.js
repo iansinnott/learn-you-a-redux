@@ -1,20 +1,16 @@
 /**
- * This is the naive implementation. The primary issue I've seen so far is that
- * calling store.dispatch from within middleware will not send that action
- * through all the middleware. For example, the logger middleware misses out on
- * actions dispatched from an epic. This is because under the hood
- * redux-observable is calling store.dispatch for all actions that come through
- * the stream, but those actions never show up in the logging middleware because
- * of this naive implementation.
+ * NOTE: Redux does the compose slightly differently, but everything still seems
+ * to work fine.
+ *
+ * Questions yet unresolved:
+ *
+ * 1. Why is createStore passed rather than a store instance itself? Why
+ *    "enhance" createStore rather than a store instance?
+ * 2. How does middlewareApi.dispatch end up dispatching through all the
+ *    middleware? What exactly is it referencing vs `next` in any of the
+ *    middlewares?
  */
-
 export const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
-export const pipe = (...fns) => fns.reduceRight((f, g) => (...args) => f(g(...args)));
-
-const sum = a => b => a + b;
-const mult = a => b => a * b;
-const sumMult = pipe(mult(2), sum(3));
-console.assert(sumMult(7) === 17, 'Should equal 12');
 
 export const applyMiddleware = (...middlewares) => {
   return (createStore) => (reducer, initialState) => {
@@ -28,12 +24,12 @@ export const applyMiddleware = (...middlewares) => {
       dispatch: (action) => dispatch(action), // Lock in dispatch
     };
 
-    const dispatches = middlewares.map(fn => fn(middlewareApi));
+    const chain = middlewares.map(fn => fn(middlewareApi));
 
     // Hm, my last question is how the dispatch and next functions differ. How
     // does calling the middlewareAPI.dispatch function still dispatch through
     // all the middleware
-    dispatch = pipe(...dispatches)(dispatch);
+    dispatch = compose(...chain)(dispatch);
 
     return {
       dispatch,
